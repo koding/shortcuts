@@ -3,7 +3,7 @@ events = require 'events'
 
 module.exports =
 
-class Keyhub extends events.EventEmitter
+class Shortcuts extends events.EventEmitter
 
   constructor: (defaults={}) ->
     
@@ -47,4 +47,3 @@ class Keyhub extends events.EventEmitter
     else
       model = collection.find name: modelName
       return model
-

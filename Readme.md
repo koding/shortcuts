@@ -1,4 +1,4 @@
-# keyhub
+# shortcuts
 
 # license
 

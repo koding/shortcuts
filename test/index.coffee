@@ -1,11 +1,11 @@
 should = require 'should'
-Keyhub = require '../index'
+Shortcuts = require '../index'
 
-describe 'Keyhub', ->
+describe 'Shortcuts', ->
 
   it 'should get', ->
 
-    hub = new Keyhub
+    hub = new Shortcuts
       x: [
         { name: 'foo' }
       ]
@@ -24,7 +24,7 @@ describe 'Keyhub', ->
 
   it 'should keep track of number of listeners', ->
 
-    hub = new Keyhub
+    hub = new Shortcuts
       x: []
       y: []
 
