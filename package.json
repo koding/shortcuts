@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/koding/keyhub",
   "dependencies": {
-    "keyconfig": "^0.2.2",
+    "keyconfig": "^0.3.0",
     "mousetrap": "^1.4.6"
   },
   "devDependencies": {
