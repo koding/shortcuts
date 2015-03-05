@@ -36,6 +36,7 @@ class Shortcuts extends events.EventEmitter
 
     super()
 
+
   removeAllListeners: (type) ->
     throw new Error 'missing type'  unless type
     super type
