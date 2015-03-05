@@ -1,5 +1,5 @@
 Keyconfig = require 'keyconfig'
-events = require 'events'
+events    = require 'events'
 
 require 'mousetrap'
 require 'mousetrap-global-bind'
@@ -54,7 +54,10 @@ class Shortcuts extends events.EventEmitter
 
         for sequence in bindings
           cb = (e) =>
-            @emit "key:#{collection.name}", e, collection, model
+            e.collection = collection
+            e.model = model
+            e.sequence = sequence
+            @emit "key:#{collection.name}", e
 
           listeners.push
             sequence: sequence
