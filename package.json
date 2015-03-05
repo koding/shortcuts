@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/koding/keyhub.git"
+    "url": "https://github.com/koding/shortcuts.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/koding/keyhub/issues"
+    "url": "https://github.com/koding/shortcuts/issues"
   },
-  "homepage": "https://github.com/koding/keyhub",
+  "homepage": "https://github.com/koding/shortcuts",
   "dependencies": {
     "keyconfig": "^0.3.0",
     "mousetrap": "^1.4.6"
