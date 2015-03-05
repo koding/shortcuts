@@ -36,6 +36,10 @@ class Shortcuts extends events.EventEmitter
 
     super()
 
+  removeAllListeners: (type) ->
+    throw new Error 'missing type'  unless type
+    super type
+
 
   @_osIndex =
     if /(Mac|iPhone|iPod|iPad)/i.test window.navigator.platform then 1 else 0
