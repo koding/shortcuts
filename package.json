@@ -1,0 +1,34 @@
+{
+  "name": "shortcuts",
+  "version": "0.1.0",
+  "description": "manages keyboard shortcuts in browser",
+  "main": "build/lib/index.js",
+  "scripts": {
+    "test": "make test",
+    "prepublish": "make all"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/koding/shortcuts.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/koding/shortcuts/issues"
+  },
+  "homepage": "https://github.com/koding/shortcuts",
+  "dependencies": {
+    "keyconfig": "^0.3.0",
+    "mousetrap": "^1.4.6"
+  },
+  "devDependencies": {
+    "coffee-script": "^1.8.0",
+    "coffeeify": "^1.0.0",
+    "mocha": "^2.1.0",
+    "mochify": "^2.5.0",
+    "should": "^5.0.1"
+  },
+  "browser": {
+    "mousetrap-global-bind": "mousetrap/plugins/global-bind/mousetrap-global-bind.js",
+    "mousetrap-record": "mousetrap/plugins/record/mousetrap-record.js"
+  }
+}
