@@ -12,13 +12,17 @@ class Shortcuts extends events.EventEmitter
   constructor: (defaults={}) ->
 
     @config = new Keyconfig defaults
-    @config.on 'change', (collection, model)->
-      @emit 'change', collection, model
 
     @_numListeners = @config.reduce (acc, x) ->
       acc[x.name] = 0
       return acc
     , {}
+
+    @config.on 'change', (collection, model) =>
+      if @_numListeners[collection.name] > 0
+        @_resetBinding collection, model
+      @emit 'change', collection, model
+      return
 
     @_listeners = {}
 
@@ -41,7 +45,25 @@ class Shortcuts extends events.EventEmitter
   removeAllListeners: (type) ->
 
     throw new Error 'missing type'  unless type
+
     super type
+
+
+  _resetBinding: (collection, model) ->
+
+    index = @_listeners[collection.name]
+
+    listeners = index[model.name]
+
+    while (listener = listeners.pop())?
+      Mousetrap.unbind listener.sequence
+
+    listeners = @_bindKeys collection, model
+
+    if listeners.length
+      index[model.name] = listeners
+    else
+      delete index[model.name]
 
 
   _bind: (collection) ->
@@ -50,29 +72,41 @@ class Shortcuts extends events.EventEmitter
 
     collection.each (model) =>
 
-      keys = if os is 'mac' then model.getMacKeys() else model.getWinKeys()
-      bindings = [].concat(keys).filter(Boolean)
+      listeners = @_bindKeys collection, model
+      if listeners.length
+        index[model.name] = listeners
 
-      if bindings.length
-        listeners = (index[model.name] or= [])
+    return
 
-        for sequence in bindings
-          cb = (e) =>
-            e.collection = collection
-            e.model = model
-            e.sequence = sequence
-            @emit "key:#{collection.name}", e
 
-          listeners.push
-            sequence: sequence
-            cb: cb
+  _bindKeys: (collection, model) ->
 
-          if model.options?.global is true
-            Mousetrap.bindGlobal sequence, cb
-          else
-            Mousetrap.bind sequence, cb
+    bindings = getPlatformBindings model
+    listeners = []
 
-        return
+    if bindings.length
+
+      bindings.forEach (sequence) =>
+
+        cb = (e) =>
+          e.collection = collection
+          e.model      = model
+          e.sequence   = sequence
+
+          @emit "key:#{collection.name}", e
+
+        listener =
+          sequence : sequence
+          cb       : cb
+
+        listeners.push listener
+
+        if model.options?.global is true
+          Mousetrap.bindGlobal listener.sequence, listener.cb
+        else
+          Mousetrap.bind listener.sequence, listener.cb
+
+    return listeners
 
 
   _unbind: (collection) ->
@@ -99,3 +133,18 @@ class Shortcuts extends events.EventEmitter
     else
       model = collection.find name: modelName
       return model
+
+
+  update: (collectionName, modelName, value, silent=no) ->
+
+    unless (collection = @get collectionName)
+      throw "#{collectionName} not found"
+
+    return collection
+      .update modelName, value, silent
+      .find name: modelName
+
+
+getPlatformBindings = (model) ->
+  bindings = if os is 'mac' then model.getMacKeys() else model.getWinKeys()
+  return [].concat(bindings).filter(Boolean)

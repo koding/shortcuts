@@ -46,7 +46,7 @@ describe 'Shortcuts', ->
     should.throws s.removeAllListeners
 
   it 'should bind/unbind keys', ->
-    
+
     s = new Shortcuts
       x: [
         { name: 'a', binding: [ ['z'], ['x', 'y'] ] },
@@ -120,3 +120,87 @@ describe 'Shortcuts', ->
     Object.keys(s._listeners).should.have.lengthOf 0
     Mousetrap.trigger 'y'
     times.should.eql 1
+
+  describe 'update', ->
+
+    it 'should update existing models and emit change', (done) ->
+
+      s = new Shortcuts
+        x: [
+          name: 'foo'
+          binding: [ null, [ 'z' ] ]
+        ]
+
+      model = s.get('x', 'foo')
+      model.getMacKeys().should.eql [ 'z' ]
+
+      s.once 'change', (collection, model) ->
+        collection.name.should.eql 'x'
+        model.name.should.eql 'foo'
+        model.getMacKeys().should.eql [ 'y' ]
+        done()
+
+      changed = s.update 'x', 'foo', binding: [ null, [ 'y' ] ]
+      changed.should.eql model
+
+    it 'should reset key bindings', (done) ->
+
+      s = new Shortcuts
+        x: [
+          name: 'foo'
+          binding: [ null, [ 'z+s' ] ]
+        ]
+
+      times = 0
+
+      cb = (e) ->
+        switch ++times
+          when 1
+            e.sequence.should.eql 'z+s'
+          when 2
+            e.sequence.should.eql 'y+f'
+            done()
+
+      s.on 'key:x', cb
+
+      Mousetrap.trigger 'z+s'
+
+      s.once 'change', ->
+        Mousetrap.trigger 'z+s'
+        Mousetrap.trigger 'y+f'
+
+      s.update 'x', 'foo', binding: [ null, [ 'y+f' ] ]
+
+    it 'should not mess up unchanged bindings', (done) ->
+
+      s = new Shortcuts
+        x: [
+          name: 'foo'
+          binding: [ null, [ 'd+u', 'h+r' ] ]
+        ]
+
+      times = 0
+
+      cb = (e) ->
+        switch ++times
+          when 1
+            e.sequence.should.eql 'd+u'
+          when 2
+            e.sequence.should.eql 'h+r'
+          when 3
+            e.sequence.should.eql 'h+r'
+          when 4
+            e.sequence.should.eql 't+v'
+            done()
+
+      s.on 'key:x', cb
+
+      Mousetrap.trigger 'd+u'
+      Mousetrap.trigger 'h+r'
+
+      s.once 'change', ->
+        Mousetrap.trigger 'h+r'
+        Mousetrap.trigger 'd+u'
+        Mousetrap.trigger 't+v'
+
+      s.update 'x', 'foo', binding: [ null, [ 'h+r', 't+v' ] ]
