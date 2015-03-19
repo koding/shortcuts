@@ -1,5 +1,6 @@
 Keyconfig = require 'keyconfig'
 events    = require 'events'
+os        = require 'component-os'
 
 require 'mousetrap'
 require 'mousetrap-global-bind'
@@ -9,7 +10,7 @@ module.exports =
 class Shortcuts extends events.EventEmitter
 
   constructor: (defaults={}) ->
-    
+
     @config = new Keyconfig defaults
     @config.on 'change', (collection, model)->
       @emit 'change', collection, model
@@ -38,12 +39,9 @@ class Shortcuts extends events.EventEmitter
 
 
   removeAllListeners: (type) ->
+
     throw new Error 'missing type'  unless type
     super type
-
-
-  @_osIndex =
-    if /(Mac|iPhone|iPod|iPad)/i.test window.navigator.platform then 1 else 0
 
 
   _bind: (collection) ->
@@ -52,7 +50,8 @@ class Shortcuts extends events.EventEmitter
 
     collection.each (model) =>
 
-      bindings = [].concat(model.binding[Shortcuts._osIndex]).filter(Boolean)
+      keys = if os is 'mac' then model.getMacKeys() else model.getWinKeys()
+      bindings = [].concat(keys).filter(Boolean)
 
       if bindings.length
         listeners = (index[model.name] or= [])
@@ -93,6 +92,7 @@ class Shortcuts extends events.EventEmitter
 
 
   get: (collectionName, modelName) ->
+
     collection = @config.find name: collectionName
     if not modelName or (modelName and not collection)
       return collection
