@@ -204,3 +204,25 @@ describe 'Shortcuts', ->
         Mousetrap.trigger 't+v'
 
       s.update 'x', 'foo', binding: [ null, [ 'h+r', 't+v' ] ]
+
+    it 'should not re-bind when silent is passed', (done) ->
+
+      s = new Shortcuts
+        x: [
+          name: 'foo'
+          binding: [ null, [ 'f+v' ] ]
+        ]
+
+      times = 0
+
+      cb = (e) ->
+        e.sequence.should.eql 'f+v'
+        if ++times is 2
+          done()
+
+      s.on 'key:x', cb
+
+      Mousetrap.trigger 'f+v'
+      s.update 'x', 'foo', binding: [ null, [ 'j+g' ]], yes
+      Mousetrap.trigger 'j+g'
+      Mousetrap.trigger 'f+v'
