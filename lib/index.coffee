@@ -88,6 +88,8 @@ class Shortcuts extends events.EventEmitter
 
       bindings.forEach (sequence) =>
 
+        return  if model.options?.enabled is false
+
         cb = (e) =>
           e.collection = collection
           e.model      = model

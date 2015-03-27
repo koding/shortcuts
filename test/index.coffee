@@ -128,6 +128,32 @@ describe 'Shortcuts', ->
       Mousetrap.trigger 'y'
       times.should.eql 1
 
+    it 'should not bind disabled models', (done) ->
+
+      s = new Shortcuts
+        x: [
+          name: 'foo'
+          binding: [ null, [ 'f+v' ] ]
+          options: enabled: false
+        ]
+
+      times = 0
+
+      cb = (e) ->
+        e.sequence.should.eql 'j+g'
+        if ++times is 2
+          done()
+
+      s.on 'key:x', cb
+
+      Mousetrap.trigger 'f+v'
+      s.update 'x', 'foo', { binding: [ null, [ 'j+g' ]], options: enabled: yes }
+      Mousetrap.trigger 'j+g'
+      Mousetrap.trigger 'f+v'
+      Mousetrap.trigger 'j+g'
+
+
+
   describe 'update', ->
 
     it 'should update existing models and emit change', (done) ->
