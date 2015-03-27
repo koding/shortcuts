@@ -3,7 +3,7 @@ Shortcuts = require '../index'
 
 describe 'Shortcuts', ->
 
-  it 'should get', ->
+  describe 'get', ->
 
     s = new Shortcuts
       x: [
@@ -14,112 +14,119 @@ describe 'Shortcuts', ->
         { name: 'baz' }
       ]
 
-    s.get('y').name.should.eql 'y'
-    s.get('x').name.should.eql 'x'
-    s.get('y', 'baz').name.should.eql 'baz'
-    z = s.get 'z'
-    (z is undefined).should.eql yes
-    should.doesNotThrow s.get.bind(s, 'z', 'qux')
+    it 'should get by collection', ->
 
-  it 'should update num of listeners', ->
+      s.get('y').name.should.eql 'y'
+      s.get('x').name.should.eql 'x'
 
-    s = new Shortcuts
-      x: []
-      y: []
+    it 'should get my collection/model', ->
 
-    s._numListeners.x.should.eql 0
-    s._numListeners.y.should.eql 0
+      s.get('y', 'baz').name.should.eql 'baz'
+      z = s.get 'z'
+      (z is undefined).should.eql yes
+      should.doesNotThrow s.get.bind(s, 'z', 'qux')
 
-    s.on 'key:x', ->
-    s._numListeners.x.should.eql 1
-    s._numListeners.y.should.eql 0
+  describe 'binding', ->
 
-    s.once 'key:x', ->
-    s._numListeners.x.should.eql 2
+    it 'should update num of listeners', ->
 
-    s.removeAllListeners 'key:x'
-    s._numListeners.x.should.eql 0
+      s = new Shortcuts
+        x: []
+        y: []
 
-  it 'removeAllListeners should always expect a type', ->
+      s._numListeners.x.should.eql 0
+      s._numListeners.y.should.eql 0
 
-    s = new Shortcuts
-    should.throws s.removeAllListeners
+      s.on 'key:x', ->
+      s._numListeners.x.should.eql 1
+      s._numListeners.y.should.eql 0
 
-  it 'should bind/unbind keys', ->
+      s.once 'key:x', ->
+      s._numListeners.x.should.eql 2
 
-    s = new Shortcuts
-      x: [
-        { name: 'a', binding: [ ['z'], ['x', 'y'] ] },
-        { name: 'b', binding: [ null, ['a+b'] ] }
-      ],
-      y: [
-        { name: 'c', binding: [ null, ['a+b'] ] }
-      ]
+      s.removeAllListeners 'key:x'
+      s._numListeners.x.should.eql 0
 
-    times = 0
-    cb = (n, e) ->
-      if times is 0
-        if n is 'x'
-          e.sequence.should.eql 'y'
-          e.collection.name.should.eql 'x'
-          e.model.name.should.eql 'a'
-        if n is 'y'
-          e.sequence.should.eql 'a+b'
-          e.collection.name.should.eql 'y'
-          e.model.name.should.eql 'c'
-      times++
+    it 'removeAllListeners should always expect a type', ->
 
-    cbx = cb.bind cb, 'x'
-    cby = cb.bind cb, 'y'
+      s = new Shortcuts
+      should.throws s.removeAllListeners
 
-    s.on 'key:x', cbx
+    it 'should bind/unbind keys', ->
 
-    Object.keys(s._listeners).should.have.lengthOf 1
+      s = new Shortcuts
+        x: [
+          { name: 'a', binding: [ ['z'], ['x', 'y'] ] },
+          { name: 'b', binding: [ null, ['a+b'] ] }
+        ],
+        y: [
+          { name: 'c', binding: [ null, ['a+b'] ] }
+        ]
 
-    s.on 'key:y', cby
-    Object.keys(s._listeners).should.have.lengthOf 2
+      times = 0
+      cb = (n, e) ->
+        if times is 0
+          if n is 'x'
+            e.sequence.should.eql 'y'
+            e.collection.name.should.eql 'x'
+            e.model.name.should.eql 'a'
+          if n is 'y'
+            e.sequence.should.eql 'a+b'
+            e.collection.name.should.eql 'y'
+            e.model.name.should.eql 'c'
+        times++
 
-    s._listeners.should.have.ownProperty 'x'
-    s._listeners.should.have.ownProperty 'y'
-    s._listeners.x.should.have.ownProperty 'a'
-    s._listeners.x.should.have.ownProperty 'b'
-    s._listeners.x.a.should.be.Array
-    s._listeners.x.a.should.have.lengthOf 2
-    s._listeners.x.a[0].sequence.should.eql 'x'
+      cbx = cb.bind cb, 'x'
+      cby = cb.bind cb, 'y'
 
-    Mousetrap.trigger 'y'
-    Mousetrap.trigger 'y'
-    times.should.eql 2
+      s.on 'key:x', cbx
 
-    Mousetrap.trigger 'a+b'
-    times.should.eql 3
+      Object.keys(s._listeners).should.have.lengthOf 1
 
-    s.removeListener 'key:x', cbx
+      s.on 'key:y', cby
+      Object.keys(s._listeners).should.have.lengthOf 2
 
-    Object.keys(s._listeners).should.have.lengthOf 1
+      s._listeners.should.have.ownProperty 'x'
+      s._listeners.should.have.ownProperty 'y'
+      s._listeners.x.should.have.ownProperty 'a'
+      s._listeners.x.should.have.ownProperty 'b'
+      s._listeners.x.a.should.be.Array
+      s._listeners.x.a.should.have.lengthOf 2
+      s._listeners.x.a[0].sequence.should.eql 'x'
 
-    Mousetrap.trigger 'y'
-    times.should.eql 3
+      Mousetrap.trigger 'y'
+      Mousetrap.trigger 'y'
+      times.should.eql 2
 
-    Mousetrap.trigger 'a+b'
-    times.should.eql 4
+      Mousetrap.trigger 'a+b'
+      times.should.eql 3
 
-    s.removeAllListeners 'key:y'
-    Mousetrap.trigger 'a+b'
-    times.should.eql 4
+      s.removeListener 'key:x', cbx
 
-    Object.keys(s._listeners).should.have.lengthOf 0
+      Object.keys(s._listeners).should.have.lengthOf 1
 
-    times = 0
-    s._numListeners.x.should.eql 0
-    s.once 'key:x', cbx
-    s._numListeners.x.should.eql 1
-    Object.keys(s._listeners).should.have.lengthOf 1
-    Mousetrap.trigger 'y'
-    times.should.eql 1
-    Object.keys(s._listeners).should.have.lengthOf 0
-    Mousetrap.trigger 'y'
-    times.should.eql 1
+      Mousetrap.trigger 'y'
+      times.should.eql 3
+
+      Mousetrap.trigger 'a+b'
+      times.should.eql 4
+
+      s.removeAllListeners 'key:y'
+      Mousetrap.trigger 'a+b'
+      times.should.eql 4
+
+      Object.keys(s._listeners).should.have.lengthOf 0
+
+      times = 0
+      s._numListeners.x.should.eql 0
+      s.once 'key:x', cbx
+      s._numListeners.x.should.eql 1
+      Object.keys(s._listeners).should.have.lengthOf 1
+      Mousetrap.trigger 'y'
+      times.should.eql 1
+      Object.keys(s._listeners).should.have.lengthOf 0
+      Mousetrap.trigger 'y'
+      times.should.eql 1
 
   describe 'update', ->
 
