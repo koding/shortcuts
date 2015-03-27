@@ -55,7 +55,7 @@ class Shortcuts extends events.EventEmitter
 
     listeners = index[model.name]
 
-    while (listener = listeners.pop())?
+    while (listener = listeners?.pop())?
       Mousetrap.unbind listener.sequence
 
     listeners = @_bindKeys collection, model
@@ -115,7 +115,7 @@ class Shortcuts extends events.EventEmitter
 
     for key, listeners of index
 
-      while (listener = listeners.pop())?
+      while (listener = listeners?.pop())?
         Mousetrap.unbind listener.sequence, listener.cb
 
       delete index[key]
