@@ -12,6 +12,8 @@ require('mousetrap');
 
 require('mousetrap-global-bind');
 
+require('mousetrap-pause');
+
 module.exports = Shortcuts = (function(superClass) {
   extend(Shortcuts, superClass);
 
@@ -187,6 +189,14 @@ module.exports = Shortcuts = (function(superClass) {
     return collection.update(modelName, value, silent).find({
       name: modelName
     });
+  };
+
+  Shortcuts.prototype.pause = function() {
+    return Mousetrap.pause();
+  };
+
+  Shortcuts.prototype.unpause = function() {
+    return Mousetrap.unpause();
   };
 
   return Shortcuts;
