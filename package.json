@@ -1,6 +1,6 @@
 {
   "name": "shortcuts",
-  "version": "0.5.0",
+  "version": "0.5.4",
   "description": "manages keyboard shortcuts in browser",
   "main": "build/lib/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "homepage": "https://github.com/koding/shortcuts",
   "dependencies": {
     "component-os": "0.0.1",
-    "keyconfig": "^0.7.1",
+    "keyconfig": "^0.7.2",
     "mousetrap": "^1.4.6"
   },
   "devDependencies": {
