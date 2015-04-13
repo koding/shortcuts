@@ -126,6 +126,13 @@ class Shortcuts extends events.EventEmitter
 
     return
 
+  
+  getCollisions: (collectionName) ->
+
+    collection = @config.find name: collectionName
+    if collection
+      return getPlatformCollisions collection
+
 
   get: (collectionName, modelName) ->
 
@@ -150,3 +157,8 @@ class Shortcuts extends events.EventEmitter
 getPlatformBindings = (model) ->
   bindings = if os is 'mac' then model.getMacKeys() else model.getWinKeys()
   return [].concat(bindings).filter(Boolean)
+
+
+getPlatformCollisions = (collection) ->
+  collisions = if os is 'mac' then collection.getCollidingMac() else model.getCollidingWin()
+  return collisions

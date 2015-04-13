@@ -153,6 +153,22 @@ describe 'Shortcuts', ->
       Mousetrap.trigger 'j+g'
 
 
+  describe 'collisions', ->
+
+    it 'should return colliding bindings for this platform', ->
+
+      s = new Shortcuts
+        y: [
+          { name: 'a', binding: [ null, [ 'z' ] ] }
+          { name: 'b', binding: [ null, [ 'z' ] ] }
+          { name: 'c', binding: [ null, [ 'x' ] ] }
+        ]
+
+      collisions = s.getCollisions 'y'
+      collisions[0].should.have.lengthOf 2
+      collisions[0][0].name.should.eql 'a'
+      collisions[0][1].name.should.eql 'b'
+
 
   describe 'update', ->
 
