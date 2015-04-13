@@ -30,6 +30,6 @@
   },
   "browser": {
     "mousetrap-global-bind": "mousetrap/plugins/global-bind/mousetrap-global-bind.js",
-    "mousetrap-record": "mousetrap/plugins/record/mousetrap-record.js"
+    "mousetrap-pause": "mousetrap/plugins/pause/mousetrap-pause.js"
   }
 }

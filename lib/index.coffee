@@ -4,6 +4,7 @@ os        = require 'component-os'
 
 require 'mousetrap'
 require 'mousetrap-global-bind'
+require 'mousetrap-pause'
 
 module.exports =
 
@@ -152,6 +153,10 @@ class Shortcuts extends events.EventEmitter
     return collection
       .update modelName, value, silent
       .find name: modelName
+
+
+  pause   : -> Mousetrap.pause()
+  unpause : -> Mousetrap.unpause()
 
 
 getPlatformBindings = (model) ->
