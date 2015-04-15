@@ -119,7 +119,7 @@ class Shortcuts extends events.EventEmitter
     for key, listeners of index
 
       while (listener = listeners?.pop())?
-        Mousetrap.unbind listener.sequence, listener.cb
+        Mousetrap.unbind listener.sequence
 
       delete index[key]
 
