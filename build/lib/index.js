@@ -146,7 +146,7 @@ module.exports = Shortcuts = (function(superClass) {
     for (key in index) {
       listeners = index[key];
       while ((listener = listeners != null ? listeners.pop() : void 0) != null) {
-        Mousetrap.unbind(listener.sequence, listener.cb);
+        Mousetrap.unbind(listener.sequence);
       }
       delete index[key];
     }

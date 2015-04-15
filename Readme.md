@@ -30,6 +30,10 @@ Returns an `events.EventEmitter`.
 # `key:collectionName`
 # `change`
 
+# todo
+
+* do not use mousetrap
+
 # license
 
 mit
