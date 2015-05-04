@@ -211,6 +211,6 @@ getPlatformBindings = function(model) {
 
 getPlatformCollisions = function(collection) {
   var collisions;
-  collisions = os === 'mac' ? collection.getCollidingMac() : model.getCollidingWin();
+  collisions = os === 'mac' ? collection.getCollidingMac() : collection.getCollidingWin();
   return collisions;
 };
