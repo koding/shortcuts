@@ -6,11 +6,10 @@ require 'mousetrap'
 require 'mousetrap-global-bind'
 require 'mousetrap-pause'
 
-module.exports =
 
-class Shortcuts extends events.EventEmitter
+module.exports = class Shortcuts extends events.EventEmitter
 
-  constructor: (defaults={}) ->
+  constructor: (defaults = {}) ->
 
     @config = new Keyconfig defaults
 
@@ -127,7 +126,7 @@ class Shortcuts extends events.EventEmitter
 
     return
 
-  
+
   getCollisions: (collectionName) ->
 
     collection = @config.find name: collectionName
@@ -145,7 +144,7 @@ class Shortcuts extends events.EventEmitter
       return model
 
 
-  update: (collectionName, modelName, value, silent=no) ->
+  update: (collectionName, modelName, value, silent = no) ->
 
     unless (collection = @get collectionName)
       throw "#{collectionName} not found"
@@ -155,15 +154,18 @@ class Shortcuts extends events.EventEmitter
       .find name: modelName
 
 
-  pause   : -> Mousetrap.pause()
-  unpause : -> Mousetrap.unpause()
+  pause: -> Mousetrap.pause()
+
+  unpause: -> Mousetrap.unpause()
 
 
 getPlatformBindings = (model) ->
+
   bindings = if os is 'mac' then model.getMacKeys() else model.getWinKeys()
   return [].concat(bindings).filter(Boolean)
 
 
 getPlatformCollisions = (collection) ->
-  collisions = if os is 'mac' then collection.getCollidingMac() else model.getCollidingWin()
+
+  collisions = if os is 'mac' then collection.getCollidingMac() else collection.getCollidingWin()
   return collisions
