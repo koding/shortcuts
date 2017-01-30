@@ -1,5 +1,5 @@
 {
-  "name": "shortcuts",
+  "name": "@koding/shortcuts",
   "version": "0.6.0",
   "description": "manages keyboard shortcuts in browser",
   "main": "build/lib/index.js",
