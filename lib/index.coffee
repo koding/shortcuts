@@ -1,4 +1,4 @@
-Keyconfig = require 'keyconfig'
+Keyconfig = require '@koding/keyconfig'
 events    = require 'events'
 os        = require 'component-os'
 
