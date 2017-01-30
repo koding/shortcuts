@@ -6,7 +6,6 @@ all: test build
 
 test:
 	@$(BIN)/mochify \
-		--require should \
 		--reporter spec \
 		--transform coffeeify \
 		--extension ".coffee" \
