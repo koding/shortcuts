@@ -1,6 +1,6 @@
 {
   "name": "shortcuts",
-  "version": "0.5.7",
+  "version": "0.6.0",
   "description": "manages keyboard shortcuts in browser",
   "main": "build/lib/index.js",
   "scripts": {
