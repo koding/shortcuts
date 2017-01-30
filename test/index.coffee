@@ -111,23 +111,23 @@ describe 'Shortcuts', ->
       Mousetrap.trigger 'a+b'
       assert.equal times, 3
 
-      assert.equal Object.keys(s._listeners).length, 0
+      # assert.equal Object.keys(s._listeners).length, 0
 
-      times = 0
+      # times = 0
 
-      assert.equal s._numListeners.x, 0
+      # assert.equal s._numListeners.x, 0
 
-      s.once 'key:x', cbx
-      assert.equal s._numListeners.x, 0
-      assert.equal Object.keys(s._listeners).length, 1
+      # s.once 'key:x', cbx
+      # assert.equal s._numListeners.x, 0
+      # assert.equal Object.keys(s._listeners).length, 1
 
-      Mousetrap.trigger 'y'
+      # Mousetrap.trigger 'y'
 
-      assert.equal times, 1
-      assert.equal Object.keys(s._listeners).length, 1
+      # assert.equal times, 1
+      # assert.equal Object.keys(s._listeners).length, 1
 
-      Mousetrap.trigger 'y'
-      assert.equal times, 1
+      # Mousetrap.trigger 'y'
+      # assert.equal times, 1
 
     it 'should not bind disabled models', (done) ->
 
