@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/koding/shortcuts",
   "dependencies": {
+    "@koding/keyconfig": "^0.8.0",
     "component-os": "0.0.1",
-    "keyconfig": "^0.7.2",
     "mousetrap": "^1.4.6"
   },
   "devDependencies": {
