@@ -25,8 +25,7 @@
     "coffee-script": "^1.8.0",
     "coffeeify": "^1.0.0",
     "mocha": "^2.1.0",
-    "mochify": "^2.5.0",
-    "should": "^5.0.1"
+    "mochify": "^2.5.0"
   },
   "browser": {
     "mousetrap-global-bind": "mousetrap/plugins/global-bind/mousetrap-global-bind.js",
